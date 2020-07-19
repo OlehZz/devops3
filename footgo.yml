@@ -1,0 +1,27 @@
+# footgo.yml
+version: "3.8"
+services:
+ sql_db:
+   image: mysql
+   container_name: footgo_db
+   environment:
+     - MYSQL_ROOT_PASSWORD=pwd
+     - MYSQL_DATABASE=footgo
+     - MYSQL_USER=footgo
+     - MYSQL_PASSWORD=123
+   network_mode: "host"
+   ports:
+     - 3306
+   restart: always
+
+ footgo:
+   build:
+     context: .
+     dockerfile: Dockerfile
+     target: prod
+   network_mode: "host"
+   depends_on:
+      - sql_db
+   ports:
+     - "8080:8080"
+     - "3306:3306"
